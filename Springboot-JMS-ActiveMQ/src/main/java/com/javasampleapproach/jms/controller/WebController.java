@@ -22,7 +22,7 @@ public class WebController {
 	
 	@RequestMapping(value="/produce")
 	public String produce(@RequestParam("msg")String msg){
-		jsmClient1.send(destinationQueue, msg);
+		jsmClient.send(destinationQueue, msg);
 		return "Done";
 	}
 	

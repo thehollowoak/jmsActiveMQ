@@ -2,5 +2,5 @@ package com.javasampleapproach.jms.client;
 
 public interface JmsClient {
 	public void send(String destinationQueue, String msg);
-	public String receive();
+	public String receive(String destinationQueue);
 }
