@@ -8,22 +8,22 @@ import com.javasampleapproach.jms.consumer.JmsConsumer;
 import com.javasampleapproach.jms.producer.JmsProducer;
 
 @Service
-public class JmsClientImpl2 implements JmsClient{
+public class JmsClientImpl implements JmsClient{
 
 	@Autowired
-	JmsConsumer1 jmsConsumer;
+	JmsConsumer jmsConsumer;
 	
 	@Autowired
-	JmsProducer2 jmsProducer;
+	JmsProducer jmsProducer;
 	
 	@Override
-	public void send(String msg) {
-		jmsProducer.send(msg);
+	public void send(String destinationQueue, String msg) {
+		jmsProducer.send(destinationQueue, msg);
 	}
 
 	@Override
-	public String receive() {
-		return jmsConsumer.receive();
+	public String receive(String destinationQueue) {
+		return jmsConsumer.receive(destinationQueue);
 	}
 
 }
