@@ -12,7 +12,7 @@ import com.javasampleapproach.jms.client.JmsClient;
 public class WebController {
 	
 	@Autowired
-	JmsClient jsmClient;
+	JmsClient jmsClient;
 
 	@Value("${jms.queue.destination1}")
 	String destinationQueue;
@@ -22,20 +22,20 @@ public class WebController {
 	
 	@RequestMapping(value="/produce")
 	public String produce(@RequestParam("msg")String msg){
-		jsmClient.send(destinationQueue, msg);
+		jmsClient.send(destinationQueue, msg);
 		return "Done";
 	}
 	
 	@RequestMapping(value="/receive")
 	public String receive(){
-		String msg = jsmClient.receive(destinationQueue);
+		String msg = jmsClient.receive(destinationQueue);
 		msg += ", received";
-		jsmClient.send(returnQueue, msg);
+		jmsClient.send(returnQueue, msg);
 		return "Done";
 	}
 	
 	@RequestMapping(value="/return")
 	public String returnMsg(){
-		return jsmClient.receive(returnQueue);
+		return jmsClient.receive(returnQueue);
 	}
 }
