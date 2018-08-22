@@ -12,30 +12,27 @@ import com.javasampleapproach.jms.client.JmsClient;
 public class WebController {
 	
 	@Autowired
-	JmsClient jmsClient;
-
-	@Value("${jms.queue.destination1}")
-	String destinationQueue;
-
-	@Value("${jms.queue.destination2}")
-	String returnQueue;
+	JmsConsumer jmsConsumer;
 	
+	@Autowired
+	JmsProducer jmsProducer;
+
 	@RequestMapping(value="/produce")
 	public String produce(@RequestParam("msg")String msg){
-		jmsClient.send(destinationQueue, msg);
+		jmsProducer.send(msg);
 		return "Done";
 	}
 	
 	@RequestMapping(value="/receive")
 	public String receive(){
-		String msg = jmsClient.receive(destinationQueue);
+		String msg = jmsConsumer.receive();
 		msg += ", received";
-		jmsClient.send(returnQueue, msg);
+		jmsConsumer.send(msg);
 		return "Done";
 	}
 	
 	@RequestMapping(value="/return")
 	public String returnMsg(){
-		return jmsClient.receive(returnQueue);
+		return jmsProducer.receive();
 	}
 }

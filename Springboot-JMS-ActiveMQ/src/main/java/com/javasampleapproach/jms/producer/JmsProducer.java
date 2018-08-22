@@ -9,7 +9,17 @@ public class JmsProducer {
 	@Autowired
 	JmsTemplate jmsTemplate;
 	
-	public void send(String destinationQueue, String msg){
+	@Value("${jms.queue.destination1}")
+	String destinationQueue;
+	
+	@Value("${jms.queue.destination2}")
+	String returnQueue;
+
+	public void send(String msg){
 		jmsTemplate.convertAndSend(destinationQueue, msg);
+	}
+
+	public String receive(String destinationQueue){
+		return (String)jmsTemplate.receiveAndConvert(destinationQueue); 
 	}
 }
