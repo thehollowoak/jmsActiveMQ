@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.javasampleapproach.jms.client.JmsClient;
+import com.javasampleapproach.jms.consumer.JmsConsumer;
+import com.javasampleapproach.jms.producer.JmsProducer;
 
 @RestController
 public class WebController {
