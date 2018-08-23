@@ -28,7 +28,7 @@ public class WebController {
 		String msg = jmsConsumer.receive();
 		msg += ", received";
 		jmsConsumer.send(msg);
-		return "Done";
+		return "msg";
 	}
 	
 	@RequestMapping(value="/return")
