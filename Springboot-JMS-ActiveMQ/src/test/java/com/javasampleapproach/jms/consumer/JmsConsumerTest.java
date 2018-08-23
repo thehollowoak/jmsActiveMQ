@@ -1,12 +1,12 @@
 package com.javasampleapproach.jms.consumer;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.jms.core.JmsTemplate;
-import static org.easymock.EasyMock.*;
 
 public class JmsConsumerTest {
 	private String destinationQueue;	
@@ -15,25 +15,27 @@ public class JmsConsumerTest {
 	private JmsTemplate mockTemplate;
 	
 	@Before
-	public void before() throws Exception {
-		mockTemplate=createMock(JmsTemplate.class);
+	public void before() {
 		consumer = new JmsConsumer();
-		consumer.jmsTemplate = mockTemplate;
 		destinationQueue = "test-queue";
+		mockTemplate = mock(JmsTemplate.class);
+		consumer.jmsTemplate = mockTemplate;
+		consumer.destinationQueue = destinationQueue;
 	}
 	
 	@After
-	public void after() throws Exception {
+	public void after() {
 		verify(mockTemplate);
 	}
-
+	
 	@Test
 	public void testReceive() {
-		String testMessage = "Test Message";
-		expect(mockTemplate.receiveAndConvert(destinationQueue)).andReturn(testMessage);
-		replay(mockTemplate);
-		String response = consumer.receive(destinationQueue);
-		assertEquals(testMessage, response);
+		String testMsg = "Test message.";
+		when(mockTemplate.receiveAndConvert(destinationQueue)).thenReturn(testMsg);
+		String response = consumer.receive();
+		assertEquals(testMsg, response);
+		
 	}
+	
 
 }
