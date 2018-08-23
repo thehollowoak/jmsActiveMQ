@@ -7,26 +7,38 @@ import org.junit.Before;
 import org.junit.Test;
 import static org.easymock.EasyMock.*;
 
-import com.javasampleapproach.jms.client.JmsClient;
+import com.javasampleapproach.jms.consumer.JmsConsumer;
+import com.javasampleapproach.jms.producer.JmsProducer;
 
 public class WebControllerTest {
 	
-	JmsClient mockClient;
+	JmsProducer mockProducer;
+	JmsConsumer mockConsumer;
+	
 	WebController controller;
 	
 	@Before
 	public void before() {
-		mockClient = createMock(JmsClient.class);
 		controller = new WebController();
-		controller.jmsClient = mockClient;
+		mockProducer = mock(JmsProducer.class);
+		mockConsumer = mock(JmsConsumer.class);
+		controller.jmsProducer = mockProducer;
+		controller.jmsConsumer = mockConsumer;
 	}
 	
+	@After
+	public void after() {
+//		verify(mockProducer);
+//		verify(mockConsumer);
+	}
 	
 	@Test
 	public void testProduce() {
-		String response = controller.produce("test message");
-		assertEquals("Done", response);
+		String testMsg = "test message";
+		String response = controller.produce(testMsg);
+		String expectedResponse = "Done";
+		assertEquals(expectedResponse, response);
 	}
-
+	
 
 }
