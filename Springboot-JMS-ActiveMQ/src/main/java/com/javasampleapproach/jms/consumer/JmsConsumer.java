@@ -23,4 +23,5 @@ public class JmsConsumer {
 	public void send(String msg){
 		jmsTemplate.convertAndSend(returnQueue, msg);
 	}
+
 }

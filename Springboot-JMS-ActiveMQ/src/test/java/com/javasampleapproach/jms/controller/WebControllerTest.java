@@ -1,11 +1,10 @@
 package com.javasampleapproach.jms.controller;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import static org.easymock.EasyMock.*;
 
 import com.javasampleapproach.jms.consumer.JmsConsumer;
 import com.javasampleapproach.jms.producer.JmsProducer;
@@ -14,6 +13,7 @@ public class WebControllerTest {
 	
 	JmsProducer mockProducer;
 	JmsConsumer mockConsumer;
+	String destinationQueue, returnQueue;
 	
 	WebController controller;
 	
@@ -26,19 +26,32 @@ public class WebControllerTest {
 		controller.jmsConsumer = mockConsumer;
 	}
 	
-	@After
-	public void after() {
-//		verify(mockProducer);
-//		verify(mockConsumer);
-	}
 	
 	@Test
 	public void testProduce() {
 		String testMsg = "test message";
 		String response = controller.produce(testMsg);
-		String expectedResponse = "Done";
+		String expectedResponse = "MESSAGE SENT: "+testMsg;
 		assertEquals(expectedResponse, response);
 	}
 	
+	@Test
+	public void testReceive() {
+		String testMsg = "test message";
+		String expectedResponse = "MESSAGE RECEIVED: "+testMsg;
+		when(mockConsumer.receive()).thenReturn(testMsg);
+		String response = controller.receive();
+		assertEquals(expectedResponse, response);
+	}
+	
+	@Test
+	public void testReturn() {
+		String testMsg = "MESSAGE RECEIVED: test message";
+		String expectedResponse = "ACKNOWLEDGEMENT RECEIVED: MESSAGE RECEIVED: test message";
+		when(mockProducer.receive()).thenReturn(testMsg);
+		String response = controller.returnMsg();
+		assertEquals(expectedResponse, response);
+	}
+
 
 }

@@ -20,19 +20,19 @@ public class WebController {
 	@RequestMapping(value="/produce")
 	public String produce(@RequestParam("msg")String msg){
 		jmsProducer.send(msg);
-		return "Done";
+		return "MESSAGE SENT: "+msg;
 	}
 	
 	@RequestMapping(value="/receive")
 	public String receive(){
-		String msg = jmsConsumer.receive();
-		msg += ", received";
+		String msg = "MESSAGE RECEIVED: "+jmsConsumer.receive();
 		jmsConsumer.send(msg);
-		return "msg";
+		return msg;
 	}
 	
 	@RequestMapping(value="/return")
 	public String returnMsg(){
-		return jmsProducer.receive();
+		String msg = jmsProducer.receive();
+		return "ACKNOWLEDGEMENT RECEIVED: "+msg;
 	}
 }

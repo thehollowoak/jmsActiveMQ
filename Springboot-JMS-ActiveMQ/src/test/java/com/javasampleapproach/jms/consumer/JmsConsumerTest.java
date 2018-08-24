@@ -25,7 +25,7 @@ public class JmsConsumerTest {
 	
 	@After
 	public void after() {
-		verify(mockTemplate);
+		verify(mockTemplate).receiveAndConvert(destinationQueue);
 	}
 	
 	@Test
@@ -35,6 +35,15 @@ public class JmsConsumerTest {
 		String response = consumer.receive();
 		assertEquals(testMsg, response);
 		
+	}
+	
+	@Test
+	public void testSend() {
+		String testMsg= "test message";
+		consumer.send(testMsg);
+		when(mockTemplate.receiveAndConvert(destinationQueue)).thenReturn(testMsg);
+		String response = consumer.receive();
+		assertEquals(testMsg, response);
 	}
 	
 
